@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Soil Sample Tally Table — COPCs / COCs</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #000;
+    background: #fff;
+    padding: 24px 32px;
+  }
+
+  h2 { font-size: 14px; font-weight: bold; margin-bottom: 10px; }
+
+  .meta { font-size: 11.5px; margin-bottom: 4px; }
+  .meta span { margin-right: 24px; }
+
+  .btn-print {
+    margin-bottom: 16px;
+    padding: 6px 18px;
+    background: #1a2744;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .btn-print:hover { background: #2a3a6a; }
+
+  /* ── MAIN TABLE ── */
+  .tally-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    border: 1px solid #888;
+  }
+
+  .tally-table thead th {
+    background: #d9d9d9;
+    border: 1px solid #888;
+    padding: 7px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    vertical-align: middle;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .tally-table thead th.col-id   { width: 130px; }
+  .tally-table thead th.col-meth { }
+  .tally-table thead th.col-res  { width: 130px; }
+  .tally-table thead th.col-t3   { width: 145px; background: #bdd7ee; }
+  .tally-table thead th.col-t8   { width: 145px; background: #c6efce; }
+
+  /* BH section header */
+  .bh-header td {
+    background: #e2e2e2;
+    border: 1px solid #888;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 11.5px;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  /* data rows */
+  .tally-table tbody tr.data-row td {
+    border: 1px solid #ccc;
+    padding: 5px 8px;
+    vertical-align: middle;
+  }
+  .tally-table tbody tr.data-row:nth-child(even) { background: #fafafa; }
+
+  td.col-id {
+    text-align: center;
+    font-weight: bold;
+    vertical-align: middle;
+    font-size: 11px;
+  }
+  td.col-id .depth {
+    font-weight: normal;
+    color: #2e7d32;
+    display: block;
+    font-size: 10.5px;
+  }
+  td.col-meth { color: #222; font-size: 11px; line-height: 1.5; }
+  td.col-res  { text-align: center; font-size: 11px; }
+  td.col-t3   { text-align: center; background: #eef4fc; font-size: 11px; }
+  td.col-t8   { text-align: center; background: #f0faf0; font-size: 11px; }
+
+  /* colours */
+  .red    { color: #cc0000; font-weight: bold; }
+  .orange { color: #b45309; font-weight: bold; }
+  .below  { color: #666; font-style: italic; font-size: 10.5px; }
+  .ok     { color: #555; font-size: 10.5px; }
+
+  .sub-param      { font-size: 10.5px; color: #cc0000; font-weight: bold; }
+  .sub-param-name { font-size: 10px;   color: #cc0000; }
+  .sub-label      { font-size: 10.5px; color: #333; font-weight: bold; }
+  .sub-label-name { font-size: 10px;   color: #555; }
+
+  /* legend */
+  .legend {
+    margin-top: 14px;
+    font-size: 10.5px;
+    color: #444;
+    line-height: 1.9;
+    border-top: 1px solid #ccc;
+    padding-top: 8px;
+  }
+
+  @media print {
+    .btn-print { display: none; }
+    body { padding: 8px; font-size: 10px; }
+    .tally-table thead th { font-size: 9px; }
+    td { font-size: 9px !important; padding: 3px 5px !important; }
+  }
+</style>
+</head>
+<body>
+
+<button class="btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+<h2>Soil Sample Tally Table — COPCs / COCs in Soil Before Remediation</h2>
+<div class="meta">
+  <span><strong>Project:</strong> Phase Two RSC</span>
+  <span><strong>Project No.:</strong> FE 26-15446</span>
+</div>
+<div class="meta">
+  <span><strong>Lab Job No.:</strong> 26-6072</span>
+  <span><strong>Sample Date:</strong> 16 to 18-Mar-2026</span>
+  <span><strong>Location:</strong> Cedar Island Road (Phase I Land) Orillia, ON</span>
+</div>
+
+<table class="tally-table">
+  <thead>
+    <tr>
+      <th class="col-id">SAMPLE ID<br/>(SAMPLE DEPTH)</th>
+      <th class="col-meth">METHOD GROUP OR PARAMETER ANALYZED</th>
+      <th class="col-res">RESULT OF<br/>ANALYSIS (ppm)</th>
+      <th class="col-t3">TABLE 3 SCS, R/P/I<br/>COARSE TEXTURED SOIL (ppm)</th>
+      <th class="col-t8">TABLE 8 SCS, R/P/I/I/C/C<br/>COARSE TEXTURED SOIL (ppm)</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ════════════════════════════════════ BH 201 ════════════════════════════════════ -->
+
+    <!-- BH 201 SS2 — 26-6072-1 -->
+    <tr class="bh-header"><td colspan="5">BH 201 SS2</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-1<br/><span class="depth">(0.76-1.22m)</span></td>
+      <td class="col-meth">Metals, H.F.M., PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 201 SS4 — 26-6072-2 -->
+    <tr class="bh-header"><td colspan="5">BH 201 SS4</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-2<br/><span class="depth">(2.29-2.74m)</span></td>
+      <td class="col-meth">BTEX, PHC (F1-F4)</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 201 SS9 — 26-6072-3 -->
+    <tr class="bh-header"><td colspan="5">BH 201 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-3<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 202 ════════════════════════════════════ -->
+
+    <!-- BH 202 SS2 — 26-6072-4 -->
+    <tr class="bh-header"><td colspan="5">BH 202 SS2</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-4<br/><span class="depth">(0.76-1.22m)</span></td>
+      <td class="col-meth">Metals, H.F.M., PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 202 SS4 — 26-6072-5 -->
+    <tr class="bh-header"><td colspan="5">BH 202 SS4</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-5<br/><span class="depth">(2.29-2.74m)</span></td>
+      <td class="col-meth">BTEX, PHC (F1-F4)</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 202 SS9 — 26-6072-6 -->
+    <tr class="bh-header"><td colspan="5">BH 202 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-6<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 203 ════════════════════════════════════ -->
+
+    <!-- BH 203 SS2 — 26-6072-7 -->
+    <tr class="bh-header"><td colspan="5">BH 203 SS2</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="3">26-6072-7<br/><span class="depth">(0.76-1.22m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), <span class="red">PAH</span>, PCB</td>
+      <td class="col-res red">PAH</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Acenaphthene</span></td>
+      <td class="col-res red">0.09</td>
+      <td class="col-t3">0.072</td>
+      <td class="col-t8">0.072</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Benzo [a] pyrene</span></td>
+      <td class="col-res red">0.65</td>
+      <td class="col-t3">0.3</td>
+      <td class="col-t8">0.3</td>
+    </tr>
+
+    <!-- BH 203 SS9 — 26-6072-8 -->
+    <tr class="bh-header"><td colspan="5">BH 203 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-8<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 204 ════════════════════════════════════ -->
+
+    <!-- BH 204 SS1 — 26-6072-9 -->
+    <tr class="bh-header"><td colspan="5">BH 204 SS1</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-9<br/><span class="depth">(0.00-0.61m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 204 SS1 Dup — 26-6072-10 -->
+    <tr class="bh-header"><td colspan="5">BH 204 SS1 (Dup)</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-10<br/><span class="depth">(0.00-0.61m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 204 SS9 — 26-6072-11 -->
+    <tr class="bh-header"><td colspan="5">BH 204 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-11<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 204 SS9 Dup — 26-6072-12 -->
+    <tr class="bh-header"><td colspan="5">BH 204 SS9 (Dup)</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-12<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 205 ════════════════════════════════════ -->
+
+    <!-- BH 205 SS3 — 26-6072-13 -->
+    <tr class="bh-header"><td colspan="5">BH 205 SS3</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-13<br/><span class="depth">(1.52-1.98m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 205 SS3 Dup — 26-6072-14 -->
+    <tr class="bh-header"><td colspan="5">BH 205 SS3 (Dup)</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-14<br/><span class="depth">(1.52-1.98m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 205 SS9 — 26-6072-15 -->
+    <tr class="bh-header"><td colspan="5">BH 205 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-15<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 205 SS9 Dup — 26-6072-16 -->
+    <tr class="bh-header"><td colspan="5">BH 205 SS9 (Dup)</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-16<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 206 ════════════════════════════════════ -->
+
+    <!-- BH 206 SS4 — 26-6072-17 -->
+    <tr class="bh-header"><td colspan="5">BH 206 SS4</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-17<br/><span class="depth">(2.29-2.74m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 206 SS10 — 26-6072-18 -->
+    <tr class="bh-header"><td colspan="5">BH 206 SS10</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-18<br/><span class="depth">(10.67-11.13m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 207 ════════════════════════════════════ -->
+
+    <!-- BH 207 SS3 — 26-6072-19 -->
+    <tr class="bh-header"><td colspan="5">BH 207 SS3</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="2">26-6072-19<br/><span class="depth">(1.52-1.98m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), <span class="red">PAH</span>, PCB</td>
+      <td class="col-res red">PAH</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Benzo [a] pyrene</span></td>
+      <td class="col-res red">0.79</td>
+      <td class="col-t3">0.3</td>
+      <td class="col-t8">0.3</td>
+    </tr>
+
+    <!-- BH 207 SS6 — 26-6072-20 -->
+    <tr class="bh-header"><td colspan="5">BH 207 SS6</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-20<br/><span class="depth">(4.57-5.03m)</span></td>
+      <td class="col-meth">pH</td>
+      <td class="col-res ok">8.12 pH unit</td>
+      <td class="col-t3 ok">5–11 (sub-surf.)</td>
+      <td class="col-t8 ok">5–11 (sub-surf.)</td>
+    </tr>
+
+    <!-- BH 207 SS9 — 26-6072-21 -->
+    <tr class="bh-header"><td colspan="5">BH 207 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-21<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 208 ════════════════════════════════════ -->
+
+    <!-- BH 208 SS5 — 26-6072-22 -->
+    <tr class="bh-header"><td colspan="5">BH 208 SS5</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-22<br/><span class="depth">(3.05-3.51m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, PCB</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- BH 208 SS9 — 26-6072-23 -->
+    <tr class="bh-header"><td colspan="5">BH 208 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-23<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 209 ════════════════════════════════════ -->
+
+    <!-- BH 209 SS3 — 26-6072-24 -->
+    <tr class="bh-header"><td colspan="5">BH 209 SS3</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="5">26-6072-24<br/><span class="depth">(1.52-1.98m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), <span class="red">PAH</span>, <span class="red">PCB</span></td>
+      <td class="col-res red">PAH, PCB</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Indeno [1,2,3-cd] pyrene</span></td>
+      <td class="col-res red">0.27</td>
+      <td class="col-t3">0.38</td>
+      <td class="col-t8">0.23</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Dibenz [a,h] anthracene</span></td>
+      <td class="col-res red">0.36</td>
+      <td class="col-t3">0.1</td>
+      <td class="col-t8">0.1</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Benzo [a] pyrene</span></td>
+      <td class="col-res ok">0.12</td>
+      <td class="col-t3">0.3</td>
+      <td class="col-t8">0.3</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PCB</span></td>
+      <td class="col-res red">0.125</td>
+      <td class="col-t3">0.35</td>
+      <td class="col-t8">0.3</td>
+    </tr>
+
+    <!-- BH 209 SS9 — 26-6072-25 -->
+    <tr class="bh-header"><td colspan="5">BH 209 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-25<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 210 ════════════════════════════════════ -->
+
+    <!-- BH 210 SS2 — 26-6072-26 -->
+    <tr class="bh-header"><td colspan="5">BH 210 SS2</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="2">26-6072-26<br/><span class="depth">(0.76-1.22m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), PAH, <span class="red">PCB</span></td>
+      <td class="col-res red">PCB</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PCB</span></td>
+      <td class="col-res red">0.167</td>
+      <td class="col-t3">0.35</td>
+      <td class="col-t8">0.3</td>
+    </tr>
+
+    <!-- BH 210 SS9 — 26-6072-27 -->
+    <tr class="bh-header"><td colspan="5">BH 210 SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-27<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 211A ════════════════════════════════════ -->
+
+    <!-- BH 211A SS1 — 26-6072-28 -->
+    <tr class="bh-header"><td colspan="5">BH 211A SS1</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="5">26-6072-28<br/><span class="depth">(0.00-0.61m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), <span class="red">PAH</span>, PCB</td>
+      <td class="col-res red">Metals, PAH</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">Metal</span> — <span class="sub-param-name">Barium</span></td>
+      <td class="col-res red">657</td>
+      <td class="col-t3">390</td>
+      <td class="col-t8">220</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">Metal</span> — <span class="sub-param-name">Copper</span></td>
+      <td class="col-res red">297</td>
+      <td class="col-t3">140</td>
+      <td class="col-t8">92</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">Metal</span> — <span class="sub-param-name">Lead</span></td>
+      <td class="col-res red">150</td>
+      <td class="col-t3">120</td>
+      <td class="col-t8">120</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Naphthalene</span></td>
+      <td class="col-res red">0.77</td>
+      <td class="col-t3">0.6</td>
+      <td class="col-t8">0.09</td>
+    </tr>
+
+    <!-- BH 211A SS9 — 26-6072-29 -->
+    <tr class="bh-header"><td colspan="5">BH 211A SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-29<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- ════════════════════════════════════ BH 211B ════════════════════════════════════ -->
+
+    <!-- BH 211B SS2 — 26-6072-30 -->
+    <tr class="bh-header"><td colspan="5">BH 211B SS2</td></tr>
+    <tr class="data-row">
+      <td class="col-id" rowspan="2">26-6072-30<br/><span class="depth">(0.76-1.22m)</span></td>
+      <td class="col-meth">Metals, H.F.M., BTEX, PHC(F1-F4), <span class="red">PAH</span>, PCB</td>
+      <td class="col-res red">PAH</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+    <tr class="data-row">
+      <td class="col-meth"><span class="sub-param">PAH</span> — <span class="sub-param-name">Naphthalene</span></td>
+      <td class="col-res red">0.11</td>
+      <td class="col-t3">0.6</td>
+      <td class="col-t8">0.09</td>
+    </tr>
+
+    <!-- BH 211B SS9 — 26-6072-31 -->
+    <tr class="bh-header"><td colspan="5">BH 211B SS9</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-31<br/><span class="depth">(9.14-9.60m)</span></td>
+      <td class="col-meth">VOCs</td>
+      <td class="col-res below">&lt;Table 3 SCS</td>
+      <td class="col-t3 below">—</td>
+      <td class="col-t8 below">—</td>
+    </tr>
+
+    <!-- pH sample — BH 204 SS1 -->
+    <tr class="bh-header"><td colspan="5">BH 204 SS1 — pH</td></tr>
+    <tr class="data-row">
+      <td class="col-id">26-6072-9<br/><span class="depth">(0.00-0.61m)</span></td>
+      <td class="col-meth">pH</td>
+      <td class="col-res ok">8.61 pH unit</td>
+      <td class="col-t3 ok">5–9 (surface)</td>
+      <td class="col-t8 ok">5–9 (surface)</td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div class="legend">
+  <strong>Legend &amp; Notes:</strong><br/>
+  • <span style="color:#cc0000;font-weight:bold;">Red values</span> = result exceeds applicable soil standard (Table 3 or Table 8)<br/>
+  • <em>&lt;Table 3 SCS</em> = all results for that sample are below Table 3 Site Condition Standards<br/>
+  • <strong>Table 3:</strong> Full Depth Generic SCS, Non-Potable Groundwater Condition — Residential / Parkland / Institutional (R/P/I)<br/>
+  • <strong>Table 8:</strong> Generic SCS within 30 m of a Water Body, Potable Groundwater Condition — R/P/I/I/C/C<br/>
+  • Standard values shown are for coarse textured soil; ( ) = medium/fine textured soil standard<br/>
+  • H.F.M. = Hydrocarbon Fractions Method &nbsp;|&nbsp; SCS = Site Condition Standards<br/>
+  • Source: MOE Soil, Ground Water and Sediment Standards — Ontario Reg. 153/04, April 15, 2011<br/>
+  • Moisture Content results excluded from this table (support parameter only)
+</div>
+
+</body>
+</html>
